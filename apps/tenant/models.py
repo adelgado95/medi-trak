@@ -5,3 +5,8 @@ class Tenant(models.Model):
     premium = models.BooleanField(default=False)
     type = models.CharField(max_length=50, choices=[('hospital', 'Hospital'), ('clinic', 'Clinic'), ('mobile_app', 'Mobile App')])
     allow_partial_patients = models.BooleanField(default=True)
+    patient_visible_fields = models.JSONField(
+        default=list,
+        help_text="List of Patient model fields this tenant is allowed to see, e.g. ['name', 'email'] or ['all']"
+    )
+    

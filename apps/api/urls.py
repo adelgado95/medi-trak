@@ -8,5 +8,5 @@ router.register(r'patients', PatientViewSet)
 router.register(r'records', RecordViewSet)
 
 urlpatterns = [
-    path('v0/', include('apps.api.v0.urls')),
+    path('', include(router.urls)),
 ]

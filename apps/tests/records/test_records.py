@@ -72,3 +72,98 @@ def test_create_rigid_record():
     assert record is not None
     assert record.diagnosis == "Flu"
     assert record.doctor_name == "Dr. Smith"
+
+@pytest.mark.django_db
+def test_patient_ssn_hippa_mandatory_true():
+    tenant = Tenant.objects.create(
+        name="HIPAA Clinic",
+        type="clinic",
+        allow_partial_patients=False,
+        patient_visible_fields=["first_name", "last_name", "ssn_data", "email"],
+        patient_records_type=Tenant.RIGID,
+        ssn_hippa_mandatory=True
+    )
+    user = User.objects.create_user(username="hippauser", password="hippapass")
+    UserProfile.objects.create(user=user, tenant=tenant)
+    client = APIClient()
+    token_response = client.post('/api/token/', {"username": "hippauser", "password": "hippapass"}, format="json")
+    token = token_response.data["access"]
+    client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
+    # Should fail: ssn as string
+    data = {
+        "tenant": tenant.id,
+        "first_name": "Alice",
+        "last_name": "Smith",
+        "ssn": "123-45-6789",
+        "email": "alice.smith@example.com"
+    }
+    response = client.post(reverse("patient-list"), data, format="json")
+    assert response.status_code == 400
+    assert "ssn_data" in response.data
+    # Should succeed: ssn_data as JSON
+    data = {
+        "tenant": tenant.id,
+        "first_name": "Alice",
+        "last_name": "Smith",
+        "ssn_data": {
+            "number": "123-45-6789",
+            "verified": "true",
+            "verification_date": "null"}
+        ,
+        "email": "alice.smith@example.com"
+    }
+    response = client.post(reverse("patient-list"), data, format="json")
+    assert response.status_code == 201
+    patient_id = response.data["id"]
+    patient = Patient.objects.get(id=patient_id)
+    assert patient.ssn_data["number"] == "123-45-6789"
+    assert patient.ssn_data["verified"] == "true"
+    assert patient.ssn_data["verification_date"] == "null"
+    assert patient.ssn is None
+
+@pytest.mark.django_db
+def test_patient_ssn_hippa_mandatory_false():
+    tenant = Tenant.objects.create(
+        name="Non-HIPAA Clinic",
+        type="clinic",
+        allow_partial_patients=False,
+        patient_visible_fields=["first_name", "last_name", "ssn", "email"],
+        patient_records_type=Tenant.RIGID,
+        ssn_hippa_mandatory=False
+    )
+    user = User.objects.create_user(username="nonhippauser", password="nonhippapass")
+    UserProfile.objects.create(user=user, tenant=tenant)
+    client = APIClient()
+    token_response = client.post('/api/token/', {"username": "nonhippauser", "password": "nonhippapass"}, format="json")
+    token = token_response.data["access"]
+    client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
+    # Should succeed: ssn as string
+    data = {
+        "tenant": tenant.id,
+        "first_name": "Bob",
+        "last_name": "Brown",
+        "ssn": "987-65-4321",
+        "email": "bob.brown@example.com"
+    }
+    response = client.post(reverse("patient-list"), data, format="json")
+    assert response.status_code == 201
+    patient_id = response.data["id"]
+    patient = Patient.objects.get(id=patient_id)
+    assert patient.ssn == "987-65-4321"
+    assert patient.ssn_data is None or patient.ssn_data == {}
+    # Should not accept ssn hippa
+    data = {
+        "tenant": tenant.id,
+        "first_name": "Bob",
+        "last_name": "Brown",
+        "ssn_data": {
+            "number": "123-45-6789",
+            "verified": "true",
+            "verification_date": "null"}
+        ,
+        "email": "bob2.brown@example.com"
+    }
+    response = client.post(reverse("patient-list"), data, format="json")
+    assert response.status_code == 400
+
+

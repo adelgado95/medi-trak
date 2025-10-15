@@ -79,3 +79,34 @@ def test_create_patient_fails_for_non_partial_tenant():
     # Should fail because required fields are missing
     error_fields = response.json().keys() if hasattr(response, 'json') else response.data.keys()
     assert "first_name" in error_fields or "last_name" in error_fields or "ssn" in error_fields
+
+@pytest.mark.django_db
+def test_patient_detail_serves_right_fields():
+    tenant = Tenant.objects.create(
+        name="ClinicFields",
+        type="clinic",
+        allow_partial_patients=True,
+        patient_visible_fields=["first_name", "email"]
+    )
+    patient = Patient.objects.create(
+        tenant=tenant,
+        first_name="Visible",
+        last_name="Hidden",
+        ssn="123-45-6789",
+        email="visiblefields@example.com"
+    )
+    user = User.objects.create_user(username="fieldsuser", password="fieldspass")
+    UserProfile.objects.create(user=user, tenant=tenant)
+    client = APIClient()
+    # Authenticate using JWT
+    token_response = client.post('/api/token/', {"username": "fieldsuser", "password": "fieldspass"})
+    token = token_response.json()["access"]
+    client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
+    url = reverse("patient-detail", args=[patient.pk])
+    response = client.get(url)
+    assert response.status_code == 200
+    # Only allowed fields should be present
+    data = response.json()
+    assert set(data.keys()) == {"first_name", "email"}
+    assert data["first_name"] == "Visible"
+    assert data["email"] == "visiblefields@example.com"

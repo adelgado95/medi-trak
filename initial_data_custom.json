@@ -1,0 +1,506 @@
+[
+{
+  "model": "patients.patient",
+  "pk": 1,
+  "fields": {
+    "tenant": 2,
+    "first_name": null,
+    "last_name": null,
+    "ssn": null,
+    "email": "john.doe3@example.com",
+    "ssn_data": null
+  }
+},
+{
+  "model": "patients.patient",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "first_name": null,
+    "last_name": null,
+    "ssn": null,
+    "email": "john.doe4@example.com",
+    "ssn_data": null
+  }
+},
+{
+  "model": "tenant.tenant",
+  "pk": 1,
+  "fields": {
+    "name": "Cliniq",
+    "premium": true,
+    "type": "clinic",
+    "allow_partial_patients": true,
+    "patient_visible_fields": [
+      "all"
+    ],
+    "patient_records_type": "flexible",
+    "ssn_hippa_mandatory": true
+  }
+},
+{
+  "model": "tenant.tenant",
+  "pk": 2,
+  "fields": {
+    "name": "Hospital",
+    "premium": false,
+    "type": "hospital",
+    "allow_partial_patients": false,
+    "patient_visible_fields": [
+      "email"
+    ],
+    "patient_records_type": "rigid",
+    "ssn_hippa_mandatory": false
+  }
+},
+{
+  "model": "records.record",
+  "pk": 1,
+  "fields": {
+    "patient": 1,
+    "created_at": "2025-10-15T15:20:21.454Z",
+    "diagnosis": "Nothing",
+    "treatment": "Hemoglobin",
+    "doctor_name": "Dr Who",
+    "notes": "Notessssssssssss"
+  }
+},
+{
+  "model": "records.record",
+  "pk": 2,
+  "fields": {
+    "patient": 1,
+    "created_at": "2025-10-15T15:27:42.597Z",
+    "diagnosis": "Nothing",
+    "treatment": "Hemoglobin",
+    "doctor_name": "Dr Who",
+    "notes": "Notessssssssssss"
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 1,
+  "fields": {
+    "patient": 1,
+    "created_at": "2025-10-15T15:17:19.392Z",
+    "record_type": "Diagnosis",
+    "data": {}
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 2,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T15:33:23.366Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 3,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T17:22:46.147Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 4,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T17:24:12.543Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 5,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T17:25:08.076Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 6,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T17:25:31.509Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 7,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T17:25:46.198Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 8,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T17:26:05.545Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 9,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T17:26:45.096Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 10,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T17:32:51.369Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "records.flexiblerecord",
+  "pk": 11,
+  "fields": {
+    "patient": 2,
+    "created_at": "2025-10-15T17:42:01.767Z",
+    "record_type": "Diagnosis",
+    "data": {
+      "custom_field1": "value1",
+      "custom_field2": 123,
+      "custom_field3": "true"
+    }
+  }
+},
+{
+  "model": "user.userprofile",
+  "pk": 1,
+  "fields": {
+    "user": 2,
+    "tenant": 1
+  }
+},
+{
+  "model": "user.userprofile",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "tenant": 2
+  }
+},
+{
+  "model": "user.userprofile",
+  "pk": 3,
+  "fields": {
+    "user": 1,
+    "tenant": 1
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 1,
+  "fields": {
+    "tenant": 1,
+    "user": 2,
+    "model": "FlexibleRecord",
+    "object_id": null,
+    "action": "create",
+    "timestamp": "2025-10-15T17:26:45.124Z",
+    "metadata": {
+      "path": "/api/records/",
+      "query": {},
+      "method": "POST"
+    }
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 2,
+  "fields": {
+    "tenant": 1,
+    "user": 2,
+    "model": "FlexibleRecord",
+    "object_id": null,
+    "action": "list",
+    "timestamp": "2025-10-15T17:26:45.172Z",
+    "metadata": {
+      "path": "/api/records/",
+      "query": {
+        "patient": [
+          "2"
+        ]
+      },
+      "method": "GET"
+    }
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 3,
+  "fields": {
+    "tenant": 1,
+    "user": 2,
+    "model": "Patient",
+    "object_id": 2,
+    "action": "view",
+    "timestamp": "2025-10-15T17:32:51.352Z",
+    "metadata": {
+      "path": "/api/patients/2/",
+      "query": {
+        "format": [
+          "json"
+        ]
+      },
+      "method": "GET"
+    }
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 4,
+  "fields": {
+    "tenant": 1,
+    "user": 2,
+    "model": "FlexibleRecord",
+    "object_id": null,
+    "action": "create",
+    "timestamp": "2025-10-15T17:32:51.371Z",
+    "metadata": {
+      "path": "/api/records/",
+      "query": {},
+      "method": "POST"
+    }
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 5,
+  "fields": {
+    "tenant": 1,
+    "user": 2,
+    "model": "FlexibleRecord",
+    "object_id": null,
+    "action": "list",
+    "timestamp": "2025-10-15T17:32:51.393Z",
+    "metadata": {
+      "path": "/api/records/",
+      "query": {
+        "patient": [
+          "2"
+        ]
+      },
+      "method": "GET"
+    }
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 6,
+  "fields": {
+    "tenant": 1,
+    "user": 2,
+    "model": "Patient",
+    "object_id": 2,
+    "action": "view",
+    "timestamp": "2025-10-15T17:42:01.739Z",
+    "metadata": {
+      "path": "/api/patients/2/",
+      "query": {
+        "format": [
+          "json"
+        ]
+      },
+      "method": "GET"
+    }
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 7,
+  "fields": {
+    "tenant": 1,
+    "user": 2,
+    "model": "FlexibleRecord",
+    "object_id": null,
+    "action": "create",
+    "timestamp": "2025-10-15T17:42:01.769Z",
+    "metadata": {
+      "path": "/api/records/",
+      "query": {},
+      "method": "POST"
+    }
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 8,
+  "fields": {
+    "tenant": 1,
+    "user": 2,
+    "model": "FlexibleRecord",
+    "object_id": null,
+    "action": "list",
+    "timestamp": "2025-10-15T17:42:01.809Z",
+    "metadata": {
+      "path": "/api/records/",
+      "query": {
+        "patient": [
+          "2"
+        ]
+      },
+      "method": "GET"
+    }
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 9,
+  "fields": {
+    "tenant": 1,
+    "user": 2,
+    "model": "Patient",
+    "object_id": 2,
+    "action": "view",
+    "timestamp": "2025-10-15T17:43:01.999Z",
+    "metadata": {
+      "path": "/api/patients/2/",
+      "query": {
+        "format": [
+          "json"
+        ]
+      },
+      "method": "GET"
+    }
+  }
+},
+{
+  "model": "api.auditlog",
+  "pk": 10,
+  "fields": {
+    "tenant": 2,
+    "user": 3,
+    "model": "Patient",
+    "object_id": 2,
+    "action": "view",
+    "timestamp": "2025-10-15T17:45:30.100Z",
+    "metadata": {
+      "path": "/api/patients/2/",
+      "query": {
+        "format": [
+          "json"
+        ]
+      },
+      "method": "GET"
+    }
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$cGyhrFUS3Wif7N07AeROEJ$euYpAG91K9Z9VDXxGlzb4C055Dygn4rKiTFn43pjanY=",
+    "last_login": "2025-10-15T14:55:15.004Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@mail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-10-15T14:55:01.340Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$j7mCaZjtIntaJWZkrbQjl7$nIzjxgpu2VSaYvBcOZFApVT4E5xFdt4MMm5g5M6T45Q=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "clinicuser",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-15T15:04:29.265Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$h5soydJ3EhzSE1mHMzWaMO$U0g5eVg9x4zQoAsgGYtnaZtPYfrgjBKaYqbiqo66MYs=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "hospitaluser",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-10-15T15:18:07.145Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

@@ -16,6 +16,7 @@ class Tenant(models.Model):
         help_text="List of Patient model fields this tenant is allowed to see, e.g. ['name', 'email'] or ['all']"
     )
     patient_records_type = models.CharField(max_length=50, choices=RECORD_TYPE_CHOICES)
+    ssn_hippa_mandatory = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name + self.type

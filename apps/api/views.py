@@ -8,6 +8,8 @@ from apps.records.models import Record, FlexibleRecord
 from rest_framework.response import Response
 from rest_framework import status
 
+from .middleware import AuditMixin
+
 class PatientSerializer(serializers.ModelSerializer):
     ssn = serializers.CharField(required=False, allow_blank=True)
     ssn_data = serializers.JSONField(required=False)
@@ -79,11 +81,12 @@ class PatientSerializer(serializers.ModelSerializer):
         return value
 
 
-class PatientViewSet(viewsets.ModelViewSet):
+class PatientViewSet(AuditMixin, viewsets.ModelViewSet):
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
     
     def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
         patient = self.get_object()  # fetch patient by pk
         tenant = getattr(request, 'tenant', None)
         allowed_fields = []
@@ -93,9 +96,10 @@ class PatientViewSet(viewsets.ModelViewSet):
                 allowed_fields = None
             else:
                 allowed_fields = tenant.patient_visible_fields
-
-        serializer = self.get_serializer(patient, fields=allowed_fields)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        patient_data = self.get_serializer(self.get_object(), fields=allowed_fields).data
+        #serializer = self.get_serializer(patient, fields=allowed_fields)
+        response.data = patient_data
+        return response
     
 
 
@@ -109,7 +113,7 @@ class FlexibleRecordSerializer(serializers.ModelSerializer):
         model = FlexibleRecord
         fields = '__all__'
 
-class RecordViewSet(viewsets.ModelViewSet):
+class RecordViewSet(AuditMixin, viewsets.ModelViewSet):
     """
     Handles patient records, using a dynamic serializer depending on tenant type.
     """

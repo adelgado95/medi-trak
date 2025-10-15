@@ -137,7 +137,6 @@ class RecordViewSet(AuditMixin, viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         tenant = self.request.tenant
-        print(self.request.data)
         patient = get_object_or_404(Patient, pk=int(self.request.data.get("patient")), tenant=tenant)
         serializer.save(patient=patient)
 

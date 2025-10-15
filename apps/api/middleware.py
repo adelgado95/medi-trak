@@ -8,10 +8,6 @@ from .models import AuditLog
 
 
 class DRFTenantMiddleware:
-    """
-    Middleware that applies tenant extraction to all DRF requests.
-    Only triggers for API paths (e.g., /api/).
-    """
 
     def __init__(self, get_response):
         self.get_response = get_response
@@ -50,7 +46,6 @@ class AuditMixin:
 
     def log_audit(self, action, instance=None, extra=None):
         tenant = getattr(self.request, "tenant", None)
-        print("Tenant logging on log audit")
         if not tenant or not tenant.premium:
             return
 

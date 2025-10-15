@@ -26,7 +26,10 @@ El sistema utiliza una arquitectura Django multi-tenant con apps separadas para 
 
 
 
-La arquitectura propuesta permite escalar el sistema, adaptarse a nuevos requisitos de clínicas/hospitales y mantener la seguridad y privacidad de los datos médicos.
+La arquitectura propuesta permite escalar el sistema, adaptarse a nuevos requisitos de clínicas/hospitales.
+Mantener la seguridad y privacidad de los datos médicos queda pendiente de hacer
+se puede hacer usando custom permission y en caso de los datos que requieren autorizacion de paciente guardar el registro de cuando un paciente da el consentimiento al tenant de ver sus datos.
+
 
 Estuve off el fin de semana esto es lo que pude hacer en el tiempo.
 :-)

@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import serializers, viewsets
 from rest_framework.generics import RetrieveAPIView
 from apps.patients.models import Patient
-from apps.records.models import Record
+from apps.tenant.models import Tenant
+from apps.records.models import Record, FlexibleRecord
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -54,28 +55,44 @@ class PatientViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(patient, fields=allowed_fields)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
 
-# class PatientDetailView(RetrieveAPIView):
-#     queryset = Patient.objects.all()
-#     serializer_class = PatientSerializer
-
-#     def get_serializer(self, *args, **kwargs):
-#         tenant = getattr(self.request, 'tenant', None)
-#         allowed_fields = []
-#         if tenant and hasattr(tenant, 'patient_visible_fields'):
-#             if 'all' in tenant.patient_visible_fields:
-#                 allowed_fields = 'all'
-#             else:
-#                 allowed_fields = tenant.patient_visible_fields
-#         kwargs['fields'] = allowed_fields if allowed_fields != 'all' else None
-#         return super().get_serializer(*args, **kwargs)
 
 class RecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Record
         fields = '__all__'
 
+class FlexibleRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FlexibleRecord
+        fields = '__all__'
+
 class RecordViewSet(viewsets.ModelViewSet):
-    queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+    """
+    Handles patient records, using a dynamic serializer depending on tenant type.
+    """
+
+    def get_serializer_class(self):
+        tenant = self.request.tenant
+
+        if tenant.patient_records_type == Tenant.RIGID:
+            return RecordSerializer
+        if tenant.patient_records_type == Tenant.FLEXIBLE:
+            return FlexibleRecordSerializer
+
+    def get_queryset(self):
+        tenant = self.request.tenant
+
+        if tenant.patient_records_type == Tenant.RIGID:
+            return Record.objects.filter(patient__tenant=tenant)
+        if tenant.patient_records_type == Tenant.FLEXIBLE:
+            return FlexibleRecord.objects.filter(patient__tenant=tenant)
+        
+
+    def perform_create(self, serializer):
+        tenant = self.request.tenant
+        print(self.request.data)
+        patient = get_object_or_404(Patient, pk=int(self.request.data.get("patient")), tenant=tenant)
+        serializer.save(patient=patient)
 

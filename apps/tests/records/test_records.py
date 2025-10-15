@@ -117,6 +117,8 @@ def test_patient_ssn_hippa_mandatory_true():
     patient_id = response.data["id"]
     patient = Patient.objects.get(id=patient_id)
     assert patient.ssn_data["number"] == "123-45-6789"
+    assert patient.ssn_data["verified"] == "true"
+    assert patient.ssn_data["verification_date"] == "null"
     assert patient.ssn is None
 
 @pytest.mark.django_db
